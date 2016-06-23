@@ -13,6 +13,8 @@ with open('tags.json') as tags_json:
 
 '''Select required tags here'''
 required_tags_key = ['s', 'n', 'a', 'y', 'b', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'j1', 'v']
+required_tags_join = ','.join(str(x) for x in required_tags_key)
+required_tags_replace = required_tags_join.replace(',', '')
 header_names = ''
 
 '''Sort all tags and get required'''
@@ -41,10 +43,9 @@ for index_final in index:
     with open(index_file_name, 'r') as name:
         each_row = csv.reader(name, delimiter=',', quotechar='|')
         for row in each_row:
-            f_url = "http://download.finance.yahoo.com/d/quotes.csv?s={}&f={}{}{}{}{}{}{}{}{}{}{}{}{}&e=".format(row[0], required_tags_key[0], required_tags_key[1], required_tags_key[2], required_tags_key[3], required_tags_key[4], required_tags_key[5], required_tags_key[6], required_tags_key[7], required_tags_key[8], required_tags_key[9], required_tags_key[10], required_tags_key[11], required_tags_key[12])
+            f_url = "http://download.finance.yahoo.com/d/quotes.csv?s={}&f={}&e=".format(row[0], required_tags_replace)
             requestTicker = urllib.request.urlopen(f_url)
             requestTickerFile = requestTicker.read()
             file_name = '{}'.format(index_final) + '.csv'
             with open(file_name, 'ab') as finalTable:
                 finalTable.write(requestTickerFile)
-                finalTable.close()
